@@ -1,0 +1,542 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DEAD RAILS | Game Modes</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --bg: #100e0c;
+  --card: #1d1915;
+  --gold: #d6a34e;
+  --red: #a83224;
+  --text: #f4e9d8;
+  --muted: #a99c8c;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Kanit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+header {
+  min-height: 330px;
+  padding: 75px 20px;
+  text-align: center;
+  background:
+    linear-gradient(#100e0c99, #100e0c),
+    url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1600')
+    center/cover;
+  border-bottom: 2px solid var(--gold);
+}
+
+.logo {
+  font-size: clamp(38px, 8vw, 75px);
+  font-weight: 800;
+  letter-spacing: 5px;
+  color: var(--gold);
+  text-shadow: 3px 3px #000;
+}
+
+header p {
+  color: #ddd0bd;
+  margin-top: 10px;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  padding: 15px;
+  background: #191511;
+  border-bottom: 1px solid #463626;
+  flex-wrap: wrap;
+}
+
+nav a {
+  color: var(--text);
+  text-decoration: none;
+  transition: .2s;
+}
+
+nav a:hover {
+  color: var(--gold);
+}
+
+.container {
+  max-width: 1150px;
+  padding: 35px 20px;
+  margin: auto;
+}
+
+.section-title {
+  font-size: 28px;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.description {
+  color: var(--muted);
+  margin-bottom: 25px;
+}
+
+.search-box {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+input {
+  flex: 1;
+  min-width: 200px;
+  padding: 13px 16px;
+  border: 1px solid #55422d;
+  background: #211b15;
+  border-radius: 8px;
+  color: white;
+  font-family: inherit;
+  outline: none;
+}
+
+input:focus {
+  border-color: var(--gold);
+}
+
+.filters {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.filter-btn {
+  border: 1px solid #5a4630;
+  padding: 8px 17px;
+  border-radius: 20px;
+  color: var(--text);
+  background: #211b15;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+  background: var(--gold);
+  color: #17110a;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid #473728;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: .25s;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  border-color: var(--gold);
+  box-shadow: 0 8px 25px #0008;
+}
+
+.card-banner {
+  height: 140px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #49301e, #17120e);
+  font-size: 65px;
+  border-bottom: 2px solid var(--gold);
+}
+
+.card-content {
+  padding: 17px;
+}
+
+.card h3 {
+  color: var(--gold);
+  font-size: 21px;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 14px;
+  margin: 8px 0 14px;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 5px;
+  background: #49311f;
+  color: #f0c77c;
+}
+
+.details-btn {
+  width: 100%;
+  margin-top: 15px;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  background: var(--red);
+  color: white;
+  font-family: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.details-btn:hover {
+  background: #d04432;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: #000c;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-box {
+  width: 100%;
+  max-width: 500px;
+  background: #211a14;
+  border: 1px solid var(--gold);
+  border-radius: 12px;
+  padding: 25px;
+  position: relative;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.close {
+  position: absolute;
+  right: 18px;
+  top: 12px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.modal-icon {
+  font-size: 60px;
+  margin: 15px 0;
+}
+
+.modal-box h2 {
+  color: var(--gold);
+}
+
+.modal-box p {
+  color: #c6b9a9;
+  line-height: 1.8;
+  margin-top: 12px;
+}
+
+.empty {
+  text-align: center;
+  color: var(--muted);
+  padding: 40px;
+  display: none;
+}
+
+footer {
+  text-align: center;
+  background: #191511;
+  padding: 30px 15px;
+  color: var(--muted);
+  margin-top: 50px;
+  border-top: 1px solid #463626;
+}
+
+footer strong {
+  color: var(--gold);
+}
+
+@media(max-width:600px) {
+  header {
+    padding: 60px 15px;
+  }
+  .container {
+    padding: 25px 15px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">DEAD RAILS</div>
+  <p>THE ULTIMATE GAME MODES DATABASE</p>
+  <p>รวมข้อมูลโหมดเกมและการเอาชีวิตรอดในโลกตะวันตก</p>
+</header>
+
+<nav>
+  <a href="#home">หน้าแรก</a>
+  <a href="#modes">โหมดเกม</a>
+  <a href="#about">เกี่ยวกับเว็บไซต์</a>
+</nav>
+
+<main class="container" id="home">
+
+  <h2 class="section-title">🤠 GAME MODES</h2>
+  <p class="description">
+    ค้นหาและสำรวจโหมดเกม Dead Rails ได้ที่นี่
+  </p>
+
+  <div class="search-box">
+    <input
+      type="text"
+      id="search"
+      placeholder="ค้นหาโหมดเกม..."
+      oninput="renderModes()"
+    >
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active" onclick="setFilter('all',this)">
+      ทั้งหมด
+    </button>
+    <button class="filter-btn" onclick="setFilter('normal',this)">
+      ปกติ
+    </button>
+    <button class="filter-btn" onclick="setFilter('hard',this)">
+      ยาก
+    </button>
+    <button class="filter-btn" onclick="setFilter('special',this)">
+      พิเศษ
+    </button>
+    <button class="filter-btn" onclick="setFilter('event',this)">
+      กิจกรรม
+    </button>
+  </div>
+
+  <div class="grid" id="modeGrid"></div>
+  <div class="empty" id="empty">
+    <h2>ไม่พบโหมดเกมที่ค้นหา</h2>
+    <p>ลองค้นหาด้วยชื่ออื่น</p>
+  </div>
+
+</main>
+
+<section class="container" id="about">
+  <h2 class="section-title">ABOUT THIS WEBSITE</h2>
+  <p class="description">
+    เว็บไซต์รวบรวมข้อมูลโหมดเกม Dead Rails
+    สำหรับผู้เล่นที่ต้องการเรียนรู้และค้นหาโหมดต่าง ๆ
+    ข้อมูลบางโหมดอาจมีการเปลี่ยนแปลงตามอัปเดตของเกม
+  </p>
+</section>
+
+<div class="modal" id="modal" onclick="closeOutside(event)">
+  <div class="modal-box">
+    <button class="close" onclick="closeModal()">×</button>
+    <div class="modal-icon" id="modalIcon"></div>
+    <h2 id="modalName"></h2>
+    <span class="tag" id="modalTag"></span>
+    <p id="modalDescription"></p>
+    <button class="details-btn" onclick="closeModal()">ปิดหน้าต่าง</button>
+  </div>
+</div>
+
+<footer>
+  <strong>DEAD RAILS WIKI</strong>
+  <p>Fan-made website | Not affiliated with Roblox</p>
+</footer>
+
+<script>
+
+const modes = [
+  {
+    name: "Normal Mode",
+    icon: "🚂",
+    type: "normal",
+    category: "โหมดปกติ",
+    description: "โหมดการเล่นพื้นฐาน เดินทางด้วยรถไฟผ่านดินแดนที่เต็มไปด้วยอันตรายและฝูงซอมบี้ เหมาะสำหรับผู้เล่นทั่วไป",
+    reward: "โหมดเริ่มต้น"
+  },
+  {
+    name: "Nightmare Mode",
+    icon: "💀",
+    type: "hard",
+    category: "โหมดยาก",
+    description: "โหมดท้าทายสำหรับผู้เล่นที่ต้องการความยากในการเอาชีวิตรอด ศัตรูและเงื่อนไขการเล่นมีความโหดมากขึ้น",
+    reward: "20 Bonds (ตามข้อมูลเดิม)"
+  },
+  {
+    name: "Bite-Sized Mode",
+    icon: "⏱️",
+    type: "normal",
+    category: "โหมดระยะสั้น",
+    description: "โหมดการเดินทางระยะสั้น เหมาะสำหรับผู้เล่นที่ต้องการเล่นเกมให้จบในเวลาที่น้อยลง",
+    reward: "5 Bonds (ตามข้อมูลเดิม)"
+  },
+  {
+    name: "Scorched Earth",
+    icon: "🔥",
+    type: "hard",
+    category: "โหมดยาก",
+    description: "โหมดที่มีสภาพแวดล้อมสุดอันตรายและภัยคุกคามจากเปลวไฟ ผู้เล่นต้องวางแผนการเอาชีวิตรอดให้ดี",
+    reward: "โหมดท้าทาย"
+  },
+  {
+    name: "Deep Freeze",
+    icon: "❄️",
+    type: "hard",
+    category: "โหมดยาก",
+    description: "โลกที่เต็มไปด้วยความหนาวเย็น ผู้เล่นต้องรักษาความอบอุ่นและรับมือกับศัตรูในสภาพอากาศสุดโหด",
+    reward: "โหมดท้าทาย"
+  },
+  {
+    name: "Endless Mode",
+    icon: "♾️",
+    type: "special",
+    category: "โหมดพิเศษ",
+    description: "โหมดเดินทางต่อเนื่องที่ไม่มีจุดสิ้นสุด เป้าหมายคือการเอาชีวิตรอดและทำระยะทางให้ได้มากที่สุด",
+    reward: "ท้าทายสถิติระยะทาง"
+  },
+  {
+    name: "Alien Mode",
+    icon: "👽",
+    type: "special",
+    category: "โหมดพิเศษ",
+    description: "โหมดธีมเอเลี่ยนที่มีเนื้อหาและความท้าทายเกี่ยวกับสิ่งมีชีวิตจากนอกโลก",
+    reward: "เนื้อหาพิเศษ"
+  },
+  {
+    name: "Edison's Revenge",
+    icon: "⚡",
+    type: "event",
+    category: "โหมดกิจกรรม",
+    description: "โหมดกิจกรรมที่มี Edison Prime และการต่อสู้กับบอส เป็นเนื้อหาธีมพิเศษ",
+    reward: "กิจกรรมพิเศษ"
+  }
+];
+
+let currentFilter = "all";
+
+function renderModes() {
+
+  const search = document
+    .getElementById("search")
+    .value.toLowerCase();
+
+  const grid = document.getElementById("modeGrid");
+  const empty = document.getElementById("empty");
+
+  const filtered = modes.filter(mode => {
+
+    const matchSearch =
+      mode.name.toLowerCase().includes(search) ||
+      mode.category.toLowerCase().includes(search) ||
+      mode.description.toLowerCase().includes(search);
+
+    const matchFilter =
+      currentFilter === "all" ||
+      mode.type === currentFilter;
+
+    return matchSearch && matchFilter;
+  });
+
+  grid.innerHTML = "";
+
+  empty.style.display =
+    filtered.length === 0 ? "block" : "none";
+
+  filtered.forEach((mode) => {
+
+    const originalIndex = modes.indexOf(mode);
+
+    const card = document.createElement("div");
+    card.className = "card";
+
+    card.innerHTML = `
+      <div class="card-banner">${mode.icon}</div>
+      <div class="card-content">
+        <h3>${mode.name}</h3>
+        <span class="tag">${mode.category}</span>
+        <p>${mode.description}</p>
+        <button class="details-btn"
+          onclick="showDetails(${originalIndex})">
+          ดูรายละเอียด
+        </button>
+      </div>
+    `;
+
+    grid.appendChild(card);
+  });
+}
+
+function setFilter(filter, button) {
+
+  currentFilter = filter;
+
+  document.querySelectorAll(".filter-btn")
+    .forEach(btn => btn.classList.remove("active"));
+
+  button.classList.add("active");
+
+  renderModes();
+}
+
+function showDetails(index) {
+
+  const mode = modes[index];
+
+  document.getElementById("modalIcon").textContent =
+    mode.icon;
+
+  document.getElementById("modalName").textContent =
+    mode.name;
+
+  document.getElementById("modalTag").textContent =
+    mode.category;
+
+  document.getElementById("modalDescription").textContent =
+    mode.description + " | " + mode.reward;
+
+  document.getElementById("modal").style.display =
+    "flex";
+}
+
+function closeModal() {
+  document.getElementById("modal").style.display = "none";
+}
+
+function closeOutside(event) {
+  if (event.target.id === "modal") {
+    closeModal();
+  }
+}
+
+renderModes();
+
+</script>
+
+</body>
+</html>
